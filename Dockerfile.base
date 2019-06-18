@@ -1,0 +1,12 @@
+FROM ubuntu:18.04 AS base
+
+RUN apt-get update
+RUN apt-get install -y apt-utils curl cmake g++ libboost-all-dev libopenblas-dev \
+	opencl-headers ocl-icd-libopencl1 ocl-icd-opencl-dev zlib1g-dev qt5-default qt5-qmake
+
+RUN mkdir -p /src
+COPY . /src/
+WORKDIR /src/build/
+
+RUN CXX=g++ CC=gcc cmake -DUSE_CPU_ONLY=1 ..
+RUN cmake --build . 
